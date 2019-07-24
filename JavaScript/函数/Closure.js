@@ -365,3 +365,293 @@ function convert(key, value) {
 
 var s = JSON.stringify(xiaoming, convert, "  ");
 console.log(s)
+
+
+var xiaoming = {
+    name: '小明',
+    age: 14,
+    gender: true,
+    height: 1.65,
+    grade: null,
+    'middle-school': '\"W3C\" Middle School',
+    skills: ['JavaScript', 'Java', 'Python', 'Lisp'],
+    toJSON: function () {
+        return {
+            'Name': this.name,
+            'Age': this.age
+        };
+    }
+};
+
+JSON.stringify(xiaoming); // "{"Name":"小明","Age":14}"
+
+JSON.parse("[1,2,3,true]");
+JSON.parse('{"name": "xiaoming", "age": 14}');
+JSON.parse("true");
+JSON.parse("123.45");
+
+var obj = JSON.parse('{"name": "xiaoming", "age": 14}', function(key, value) {
+    if (key === 'name') {
+        return value + ' 同学';
+    }
+    return value;
+})
+console.log(obj);
+
+'use strict'
+
+var url = 'https://api.openweathermap.org/data/2.5/forecast?q=Shanghai,cn&appid=800f49846586c3ba6e7052cfc89af16c';
+$.getJSON(url, function (data) {
+    var info = {
+        city: data.city.name,
+        weather: data.list[0].weather[0].main,
+        time: data.list[0].dt_txt
+    };
+    alert(JSON.stringify(info, null, '  '));
+});
+
+function foo() {
+    return 0;
+}
+
+function Student(name) {
+    this.name = name;
+    this.hello = function() {
+        alert('Hello, ' + this.name + '!');
+    }
+}
+
+var xiaoming = new Student('小明');
+xiaoming.name;
+xiaoming.hello();
+
+var xiaoming1 = Student('小明');
+xiaoming1.name;
+xiaoming1.hello();
+
+xiaoming.constructor === Student.prototype.constructor; // true
+Student.prototype.constructor === Student; // true
+Object.getPrototypeOf(xiaoming) === Student.prototype; // true
+xiaoming instanceof Student // true
+
+var xiaohong = new Student('小红');
+xiaohong.name;
+xiaohong.hello();
+
+function Student(name) {
+    this.name = name;
+}
+
+Student.prototype.hello = function() {
+    alert('Hello, ' + this.name + "!");
+}
+
+var xiaoli = new Student('xiaoli');
+var xiaolv = new Student('xiaolv');
+xiaoli.name;
+xiaolv.name;
+xiaoli.hello === xiaolv.hello; // true
+
+function Student(props) {
+    this.name = props.name || 'Unnamed';
+}
+
+Student.prototype.hello = function() {
+    alert('Hello, ' + this.name + '!');
+};
+
+function createStudent(props) {
+    return new Student(props || {});
+}
+
+function Cat(name) {
+    this.name = name;
+}
+Cat.prototype.say = function() {
+    return 'Hello, ' + this.name + '!';
+}
+
+function PrimaryStudent(props) {
+    Student.call(this, props);
+    this.grade = props.grade || 1;
+}
+
+function F() {
+
+}
+
+F.prototype = Student.prototype;
+PrimaryStudent.prototype = new F();
+PrimaryStudent.prototype.constructor = PrimaryStudent;
+PrimaryStudent.prototype.getGrade = function() {
+    return this.grade;
+}
+
+var xiaoming = new PrimaryStudent({
+    name: 'xiaoming',
+    grade: 2
+});
+xiaoming.name;
+xiaoming.age;
+
+xiaoming.__proto__ === PrimaryStudent.prototype;
+xiaoming.__proto__.__proto__ === Student.prototype;
+
+xiaoming instanceof PrimaryStudent;
+xiaoming instanceof Student;
+
+function inherits(Child, Parent) {
+    var F = function() {};
+    F.prototype = Parent.prototype;
+    Child.prototype = new F();
+    Child.prototype.constructor = Child;
+}
+
+function JuniorStudent(props) {
+    Student.call(this, props);
+    this.grade = props.grade || 11;
+}
+inherits(JuniorStudent, Student);
+
+JuniorStudent.prototype.getGrade = function () {
+    return this.grade;
+}
+
+var xiaoming = new JuniorStudent({
+    name: 'xiaoming',
+    grade: 12
+});
+
+xiaoming.__proto__ === JuniorStudent.prototype;
+xiaoming.__proto__.__proto__ === Student.prototype;
+
+class Student {
+    constructor(name) {
+        this.name = name;
+    }
+    hello() {
+        alert('Hello, ' + this.name + '!');
+    }
+}
+
+class HighStudent extends Student {
+    constructor(name, grade) {
+        super(name);
+        this.grade = grade;
+    }
+
+    myGrade() {
+        alert('I\'m at grade ' + this.grade);
+    }
+}
+
+'use strict';
+
+class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+}
+
+class Cat extends Animal {
+    constructor(name) {
+        super(name);
+    }
+    say() {
+        alert('Hello, ' + this.name + '!');
+    }
+}
+
+console.log('window inner size: ' + window.innerWidth + 'x' + window.innerHeight); // window inner size: 300x698
+console.log('window outer size: ' + window.outerWidth + 'x' + window.outerHeight); // window outer size: 1080x810
+
+console.log('appName = ' + navigator.appName);
+console.log('appVersion = ' + navigator.appVersion);
+console.log('language = ' + navigator.language);
+console.log('platform = ' + navigator.platform);
+console.log('userAgent = ' + navigator.userAgent);
+
+console.log('Screen size = ' + screen.width + 'x' + screen.height);
+
+document.getElementById('test-div').getElementsByClassName('c-red c-green').getElementById('test-p')
+
+// 选择<p>JavaScript</p>:
+var js = document.getElementById('test-div').getElementsByClassName('c-red')[0].firstElementChild;
+
+// 选择<p>Python</p>,<p>Ruby</p>,<p>Swift</p>:
+var arr = document.getElementById('test-div').getElementsByClassName('c-red')[1].children;
+
+// 选择<p>Haskell</p>:
+var haskell = document.getElementById('test-div').getElementsByClassName('c-green')[1].lastElementChild;
+
+
+// 获取<p>javascript</p>节点:
+var js = document.getElementById('test-div').firstElementChild;
+
+// 修改文本为JavaScript:
+// TODO:
+
+// 修改CSS为: color: #ff0000, font-weight: bold
+// TODO:
+
+var
+    i, c, arr = new Array(),
+    list = document.getElementById('test-list');
+for (i = 0; i < list.children.length; i++) {
+    c = list.children[i];
+    arr.push(c.innerHTML);
+     // 拿到第i个子节点
+}
+arr.sort();
+for (var i = 0; i < arr.length; i++) {
+    list.children[i].innerHTML = arr[i];
+}
+
+var parent = document.getElementById('test-list');
+parent.removeChild(parent.children[1]);
+parent.removeChild(parent.children[2]); 
+parent.removeChild(parent.children[3]); 
+
+
+function checkForm() {
+    var input_pwd = document.getElementById('input-password');
+    var md5_pwd = document.getElementById('md5-password');
+    // 把用户输入的明文变为MD5:
+    md5_pwd.value = toMD5(input_pwd.value);
+    // 继续下一步:
+    return true;
+}
+
+
+
+
+
+// 两次输入口令必须一致。
+'use strict';
+var checkRegisterForm = function () {
+    var username = document.getElementById('username');
+    var password = document.getElementById('password');
+    var password2 = document.getElementById('password-2');
+
+    // 用户名必须是3-10位英文字母或数字；
+    re = /^[a-zA-Z0-9]{3,10}$/;
+    if (re.test(username)) {
+        alert('用户名必须是3-10位英文字母或数字');
+        return false;
+    } else {
+        // 口令必须是6-20位；
+        if (password.length < 6 || password.length > 20) {
+            alert('口令必须是6-20位');
+            return false;
+        } else {
+            if (password !== password2) {
+                alert('两次输入口令必须一致。');
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
+    
+}
