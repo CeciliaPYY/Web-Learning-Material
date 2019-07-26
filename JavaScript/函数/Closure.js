@@ -655,3 +655,187 @@ var checkRegisterForm = function () {
 
     
 }
+
+var f = document.getElementById('test-file-upload');
+var fname = f.value;
+if(!fname || !(fname.endsWith('.jpg') || fname.endsWith('.png') || fname.endsWith('.png'))) {
+    alert('Can only upload image file.');
+    return false;
+}
+
+var 
+    fileInput = document.getElementById('test-image-file'),
+    info = document.getElementById('test-file-info'),
+    preview = document.getElementById('test-image-preview');
+
+fileInput.addEventListener('change', function() {
+    preview.style.backgroundImage = '';
+
+    if(!fileInput.value) {
+        info.innerHTML = '没有文件';
+        return;
+    }
+
+    var file = fileInput.files[0];
+    info.innerHTML = '文件: ' + file.name + '<br>' +
+                     '大小: ' + file.size + '<br>' +
+                     '修改: ' + file.lastModifiedDate;
+    if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
+        alert('不是有效的图片文件！');
+        return;
+    }
+
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        var data = e.target.result;
+        preview.style.backgroundImage = 'url(' + data + ')';
+    }
+
+    reader.readAsDataURL(file);
+});
+
+'use strict';
+function success(text) {
+    var textarea = document.getElementById('test-response-text');
+    textarea.value = text;
+}
+
+function fail(code) {
+    var textarea = document.getElementById('test-response-text');
+    textarea = 'Error code: ' + code;
+}
+
+var request = new XMLHttpRequest();
+request.onreadystatechange = function() {
+    if (request.readyState === 4) { // 成功完成
+        // 判断响应结果
+        if (request.status === 200) {
+            // 成功
+            return success(request.responseText);
+        } else {
+            return fail(request.status);
+        } 
+    } else {
+        // Http 请求还在继续
+    }
+}
+
+request.open('GET', 'http://www.sina.com.cn/');
+request.send();
+
+alert('请求已发送，请等待响应...');
+
+function refreshPrice(data) {
+    var p = document.getElementById('test-jsonp');
+    p.innerHTML = '当前价格：' +
+    data['0000001'].name +': ' + 
+    data['0000001'].price + '；' +
+    data['1399001'].name + ': ' +
+    data['1399001'].price;
+}
+
+function getPrice() {
+    var
+        js = document.createElement('script');
+        head = document.getElementsByTagName('head')[0];
+        js.src = 'http://api.money.126.net/data/feed/0000001,1399001?callback=refreshPrice';
+        head.appendChild(js);
+}
+
+function test(resolve, reject) {
+    var timeOut = Math.random() * 2;
+    log('set timeout to: ' + timeOut + ' seconds.');
+    setTimeout(function () {
+        if (timeOut < 1) {
+            log('call resolve()...');
+            resolve('200 OK');
+        } 
+        else {
+            log('call reject()...');
+            reject('timeout in ' + timeOut + ' seconds.');
+        }
+    }, timeOut * 1000);
+}
+
+new Promise(function test(resolve, reject) {
+    var timeOut= Math.random() * 2;
+    setTimeout(function () {
+        if (timeOut < 1) {
+            log('call resolve()...');
+            resolve('200 OK');
+        }
+        else {
+            log('call reject()...');
+            reject('timeout in ' + timeOut + ' seconds.');
+        }
+    }, timeOut * 1000);
+}).then(function (r) {
+    log('Done: ' + r);
+}).catch(function (reason) {
+    log('Failed: ' + reason);
+})
+
+function multiply(input) {
+    return new Promise(function(resolve, reject) {
+        log('calculating ' + input + ' x ' + input + '...');
+        setTimeout(resolve, 500, input * input);
+    })
+}
+
+function add(input) {
+    return new Promise(function (resolve, reject) {
+        log('calculating ' + input + ' + ' + input + '...');
+        setTimeout(resolve, 500, input + input);
+    })
+}
+
+new Promise(function (resolve, reject) {
+    log('start new Promise...');
+    resolve(123);
+}).then(multiply).then(add).then(multiply).then(add).then(function (result) {
+    log('Got value: ' + result);
+})
+
+function ajax(method, url, data) {
+    var request = new XMLHttpRequest();
+    return new Promise(function (resolve, reject) {
+        request.onreadystatechange = function() {
+            if (request.readyState === 4) {
+                if (request.status === 200) {
+                    resolve(request.responseText);
+                }
+                else {
+                    reject(request.status);
+                }
+            }
+        };
+        request.open(method, url);
+        request.send(data);
+    });
+}
+
+var log = document.getElementById('test-promise-ajax-result');
+var p = ajax('GET', '/api/categories');
+p.then(function (text) {
+    log.innerText(text);
+}).catch(function (status) {
+    log.innerText('Error: '+ status);
+})
+
+var p1 = new Promise(function (resolve, reject) {
+    setTimeout(resolve, 500, 'P1');
+})
+
+var p2 = new Promise(function(resolve, reject) {
+    setTimeout(resolve, 600, 'P2')
+})
+
+Promise.race([p1, p2]).then(function (results) {
+    console.log(results); // 'P1'
+})
+
+window.jQuery;
+window.$;
+
+$ === jQuery;
+typeof($);

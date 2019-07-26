@@ -1,46 +1,5 @@
 <!-- HTML结构 -->
-<form id="test-register" action="#" target="_blank" onsubmit="return checkRegisterForm()">
-  <p id="test-error" style="color:red"></p>
-  <p>
-      用户名: <input type="text" id="username" name="username">
-  </p>
-  <p>
-      口令: <input type="password" id="password" name="password">
-  </p>
-  <p>
-      重复口令: <input type="password" id="password-2">
-  </p>
-  <p>
-      <button type="submit">提交</button> <button type="reset">重置</button>
-  </p>
-</form>
-
-<script>
-
-var checkRegisterForm = function () {
-    var username = document.getElementById('username');
-    var password = document.getElementById('password');
-    var password2 = document.getElementById('password-2');
-
-    // 用户名必须是3-10位英文字母或数字；
-    re = /^[a-zA-Z0-9]{3,10}$/;
-    if (re.test(username.value)) {
-        alert('用户名必须是3-10位英文字母或数字');
-        return false;
-    } else {
-        // 口令必须是6-20位；
-        if (password.value.length < 6 || password.value.length > 20) {
-            alert('')
-            return false;
-        } else {
-            if (password.value !== password2.value) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-    }
-
-    
-}
-</script>
+<ul id="test-ul">
+    <li class="js">JavaScript</li>
+    <li name="book">Java &amp; JavaScript</li>
+</ul>
